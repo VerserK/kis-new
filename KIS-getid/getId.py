@@ -48,59 +48,59 @@ async def get_multiurl(urls,header, loop):
     async with ClientSession(connector=connector, loop=loop) as session:
         results = await asyncio.gather(*[get(session, url, header) for url in urls], return_exceptions=True)
         return results
-    
-start = dt.datetime.today()
-# try:
-#     os.remove(r"D:\Data for Bridge\KIS\API_Record\ALL_ID.csv")
-# except:
-#     print("No file.")
-all_id = pd.DataFrame()
-headers = {"Authorization": "Bearer 06b4aa5b-dafd-4971-b600-0b862b723209"}
-urlID = 'https://wolf-prp-prod-head-api.propulsetelematics.com/wlf/api/units/paginated?start=0&limit=10000&order=NAME&statusIds='
+def run():   
+    start = dt.datetime.today()
+    # try:
+    #     os.remove(r"D:\Data for Bridge\KIS\API_Record\ALL_ID.csv")
+    # except:
+    #     print("No file.")
+    all_id = pd.DataFrame()
+    headers = {"Authorization": "Bearer 06b4aa5b-dafd-4971-b600-0b862b723209"}
+    urlID = 'https://wolf-prp-prod-head-api.propulsetelematics.com/wlf/api/units/paginated?start=0&limit=10000&order=NAME&statusIds='
 
-resID = requests.get(urlID, headers=headers)
-js = resID.json()
-try:
-    countUnits = js['units']['totalCount']
-except:
-    countUnits = js['totalCount']
-    print(countUnits)
-print('TotalUnit = ' + str(countUnits))
-n = math.ceil(countUnits/10000)
-try:
-    all_id = json_normalize(js['units']['items'])
-except:
-    all_id = json_normalize(js['items'])
-
-print('Loop Started')
-for i in range(1,n+1):
-    urlID = 'https://wolf-prp-prod-head-api.propulsetelematics.com/wlf/api/units/paginated?start='+str(i*10000)+'&limit=10000&order=NAME&statusIds='
     resID = requests.get(urlID, headers=headers)
     js = resID.json()
     try:
-        all_id = all_id.append(json_normalize(js['units']['items']), ignore_index = True)
+        countUnits = js['units']['totalCount']
     except:
-        all_id = all_id.append(json_normalize(js['items']), ignore_index = True)
-print('Loop Finished')
-#all_id[['unitId','unitName','typeCode']].to_csv("D:\Data for Bridge\KIS\API_Record\Engine_Detail_base_check.csv",index=False)
-all_id = all_id[all_id['typeCode'].eq('icon-wolf-general') == False]
-all_id['typeCode'] = np.where(all_id['typeCode'].eq('icon-wolf-trencher_rock_saw'),'SKC_KUBOTA_COMBINE_HARVESTER',all_id['typeCode'])
-all_id['typeCode'] = np.where(all_id['typeCode'].eq('icon-wolf-tractor_1'),'SKC_KUBOTA_TRACTOR',all_id['typeCode'])
-all_id['typeCode'] = np.where(all_id['typeCode'].eq('icon-wolf-excavator'),'SKC_KUBOTA_MINI_EXCAVATOR',all_id['typeCode'])
-all_id['typeCode'] = np.where(all_id['typeCode'].isin(('SKC_KUBOTA_MINI_EXCAVATOR','SKC_KUBOTA_TRACTOR','SKC_KUBOTA_COMBINE_HARVESTER'))==False,'UNDEFINED',all_id['typeCode'])
-all_id[['unitId','unitName','typeCode']].to_csv("D:\Data for Bridge\KIS\API_Record\Engine_Detail_Update.csv",index=False)
+        countUnits = js['totalCount']
+        print(countUnits)
+    print('TotalUnit = ' + str(countUnits))
+    n = math.ceil(countUnits/10000)
+    try:
+        all_id = json_normalize(js['units']['items'])
+    except:
+        all_id = json_normalize(js['items'])
 
-for index,row  in all_id.iterrows():
-    if 'เสีย' in row['unitName'] or 'เก่า' in row['unitName'] or 'KRDA' in row['unitName']:
-        all_id.drop(index,inplace = True)
-    elif '(' in row['unitName']:
-        all_id.drop(index,inplace = True)
-    elif row['unitName'] == 'NG':
-        all_id.drop(index,inplace = True)
+    print('Loop Started')
+    for i in range(1,n+1):
+        urlID = 'https://wolf-prp-prod-head-api.propulsetelematics.com/wlf/api/units/paginated?start='+str(i*10000)+'&limit=10000&order=NAME&statusIds='
+        resID = requests.get(urlID, headers=headers)
+        js = resID.json()
+        try:
+            all_id = all_id.append(json_normalize(js['units']['items']), ignore_index = True)
+        except:
+            all_id = all_id.append(json_normalize(js['items']), ignore_index = True)
+    print('Loop Finished')
+    #all_id[['unitId','unitName','typeCode']].to_csv("D:\Data for Bridge\KIS\API_Record\Engine_Detail_base_check.csv",index=False)
+    all_id = all_id[all_id['typeCode'].eq('icon-wolf-general') == False]
+    all_id['typeCode'] = np.where(all_id['typeCode'].eq('icon-wolf-trencher_rock_saw'),'SKC_KUBOTA_COMBINE_HARVESTER',all_id['typeCode'])
+    all_id['typeCode'] = np.where(all_id['typeCode'].eq('icon-wolf-tractor_1'),'SKC_KUBOTA_TRACTOR',all_id['typeCode'])
+    all_id['typeCode'] = np.where(all_id['typeCode'].eq('icon-wolf-excavator'),'SKC_KUBOTA_MINI_EXCAVATOR',all_id['typeCode'])
+    all_id['typeCode'] = np.where(all_id['typeCode'].isin(('SKC_KUBOTA_MINI_EXCAVATOR','SKC_KUBOTA_TRACTOR','SKC_KUBOTA_COMBINE_HARVESTER'))==False,'UNDEFINED',all_id['typeCode'])
+    all_id[['unitId','unitName','typeCode']].to_csv("D:\Data for Bridge\KIS\API_Record\Engine_Detail_Update.csv",index=False)
 
-export = all_id[['unitId','unitName']]
-export = export.drop_duplicates()
-export.to_csv("ALL_ID.csv",index=False)
-upload_csv("ALL_ID.csv")
-print(abs(start-dt.datetime.today()).total_seconds()/60)
+    for index,row  in all_id.iterrows():
+        if 'เสีย' in row['unitName'] or 'เก่า' in row['unitName'] or 'KRDA' in row['unitName']:
+            all_id.drop(index,inplace = True)
+        elif '(' in row['unitName']:
+            all_id.drop(index,inplace = True)
+        elif row['unitName'] == 'NG':
+            all_id.drop(index,inplace = True)
+
+    export = all_id[['unitId','unitName']]
+    export = export.drop_duplicates()
+    export.to_csv("ALL_ID.csv",index=False)
+    upload_csv("ALL_ID.csv")
+    print(abs(start-dt.datetime.today()).total_seconds()/60)
 
