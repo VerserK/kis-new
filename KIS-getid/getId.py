@@ -25,7 +25,7 @@ blob_service_client = BlobServiceClient(account_url=account_url, credential=sas_
 container_client = blob_service_client.get_container_client(container=container)
 
 def upload_csv(local_file_name):
-    target_file_name = os.path.basename(local_file_name)
+    target_file_name = local_file_name
     blob_client = container_client.get_blob_client(target_file_name)
     with open(local_file_name, "rb") as data:
         print("Upload Start")
