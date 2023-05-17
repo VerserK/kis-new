@@ -3,7 +3,7 @@
 # Manually managing azure-functions-worker may cause unexpected issues
 
 azure-functions
-pandas==1.5.3
+pandas
 numpy==1.22.3
 aiohttp
 azure-storage-blob

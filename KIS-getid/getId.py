@@ -106,5 +106,3 @@ def run():
     export.to_csv("ALL_ID.csv",index=False)
     upload_csv("ALL_ID.csv")
     print(abs(start-dt.datetime.today()).total_seconds()/60)
-
-run()
