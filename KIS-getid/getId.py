@@ -73,14 +73,17 @@ def run():
         all_id = json_normalize(js['items'])
 
     print('Loop Started')
+    print(all_id)
     for i in range(1,n+1):
         urlID = 'https://wolf-prp-prod-head-api.propulsetelematics.com/wlf/api/units/paginated?start='+str(i*10000)+'&limit=10000&order=NAME&statusIds='
         resID = requests.get(urlID, headers=headers)
         js = resID.json()
         try:
-            all_id = all_id.append(json_normalize(js['units']['items']), ignore_index = True)
+            all_id = pd.concat([all_id,json_normalize(js['units']['items'])], ignore_index = True)
+            # all_id = all_id.append(json_normalize(js['units']['items']), ignore_index = True)
         except:
-            all_id = all_id.append(json_normalize(js['items']), ignore_index = True)
+            all_id = pd.concat([all_id,json_normalize(js['items'])], ignore_index = True)
+            # all_id = all_id.append(json_normalize(js['items']), ignore_index = True)
     print('Loop Finished')
     #all_id[['unitId','unitName','typeCode']].to_csv("D:\Data for Bridge\KIS\API_Record\Engine_Detail_base_check.csv",index=False)
     all_id = all_id[all_id['typeCode'].eq('icon-wolf-general') == False]
@@ -88,7 +91,7 @@ def run():
     all_id['typeCode'] = np.where(all_id['typeCode'].eq('icon-wolf-tractor_1'),'SKC_KUBOTA_TRACTOR',all_id['typeCode'])
     all_id['typeCode'] = np.where(all_id['typeCode'].eq('icon-wolf-excavator'),'SKC_KUBOTA_MINI_EXCAVATOR',all_id['typeCode'])
     all_id['typeCode'] = np.where(all_id['typeCode'].isin(('SKC_KUBOTA_MINI_EXCAVATOR','SKC_KUBOTA_TRACTOR','SKC_KUBOTA_COMBINE_HARVESTER'))==False,'UNDEFINED',all_id['typeCode'])
-    all_id[['unitId','unitName','typeCode']].to_csv("D:\Data for Bridge\KIS\API_Record\Engine_Detail_Update.csv",index=False)
+    all_id[['unitId','unitName','typeCode']].to_csv("Engine_Detail_Update.csv",index=False)
 
     for index,row  in all_id.iterrows():
         if 'เสีย' in row['unitName'] or 'เก่า' in row['unitName'] or 'KRDA' in row['unitName']:
@@ -104,3 +107,4 @@ def run():
     upload_csv("ALL_ID.csv")
     print(abs(start-dt.datetime.today()).total_seconds()/60)
 
+run()
