@@ -11,3 +11,4 @@ pymssql
 pyodbc
 sqlalchemy
 urllib3
+pymssql
