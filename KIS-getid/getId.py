@@ -22,18 +22,8 @@ import io
 sas_token = "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiyx&se=2023-12-31T16:42:26Z&st=2023-05-17T08:42:26Z&spr=https&sig=1ISnU4nNO0apxAr9C8sNk2TnBTsgv3Y5b2s4GIWlWKQ%3D"
 account_url = "https://kisnewstorage.blob.core.windows.net"
 container = "apirecord"
-path = "abfss://apirecord@kisnewstorage.dfs.core.windows.net/apirecord/"
 blob_service_client = BlobServiceClient(account_url=account_url, credential=sas_token)
 container_client = blob_service_client.get_container_client(container=container)
-
-def upload_csv(local_file_name):
-    target_file_name = local_file_name
-    blob_client = container_client.get_blob_client(target_file_name)
-    with open(local_file_name, "rb") as data:
-        print("Upload Start")
-        content_settings = ContentSettings(content_type='text/plain')
-        blob_client.upload_blob(data, overwrite=True, content_settings=content_settings)
-        print("Upload Done")
 
 async def get_single(url,headers,payload):
     async with ClientSession() as session:
