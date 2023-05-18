@@ -15,11 +15,10 @@ from pandas import json_normalize
 from sys import exit
 import pyodbc
 from pandas import Series as se
-import import_template
-from import_template import uploadCSV
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, ContentSettings
 import io
 from io import StringIO
+from . import import_template
 
 sas_token = "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiyx&se=2023-12-31T16:42:26Z&st=2023-05-17T08:42:26Z&spr=https&sig=1ISnU4nNO0apxAr9C8sNk2TnBTsgv3Y5b2s4GIWlWKQ%3D"
 account_url = "https://kisnewstorage.blob.core.windows.net"
@@ -152,7 +151,7 @@ def run():
     blob_client = BlobClient.from_blob_url("https://kisnewstorage.blob.core.windows.net/apirecord/join_subdrop.csv?sp=r&st=2023-05-18T05:09:09Z&se=2023-12-31T13:09:09Z&spr=https&sv=2022-11-02&sr=b&sig=hqTfwV%2BBgcZdUNuzurCAJDNELdgPQ70mMUnc%2Bd0g9E0%3D")
     download_stream = blob_client.download_blob(max_concurrency=1, encoding='UTF-8')
     join_subdrop = pd.read_csv(StringIO(download_stream.readall()), low_memory=False)
-    uploadCSV('KISRecord',join_subdrop,'Engine_Detail')
+    import_template.uploadCSV('KISRecord',join_subdrop,'Engine_Detail')
 
     print("FINISH UPLOADING KIS ENGINE_DETAIL")
 
