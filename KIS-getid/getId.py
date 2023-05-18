@@ -21,6 +21,7 @@ from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, C
 sas_token = "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiyx&se=2023-12-31T16:42:26Z&st=2023-05-17T08:42:26Z&spr=https&sig=1ISnU4nNO0apxAr9C8sNk2TnBTsgv3Y5b2s4GIWlWKQ%3D"
 account_url = "https://kisnewstorage.blob.core.windows.net"
 container = "apirecord"
+path = "https://kisnewstorage.blob.core.windows.net/apirecord/"
 blob_service_client = BlobServiceClient(account_url=account_url, credential=sas_token)
 container_client = blob_service_client.get_container_client(container=container)
 
@@ -91,7 +92,7 @@ def run():
     all_id['typeCode'] = np.where(all_id['typeCode'].eq('icon-wolf-tractor_1'),'SKC_KUBOTA_TRACTOR',all_id['typeCode'])
     all_id['typeCode'] = np.where(all_id['typeCode'].eq('icon-wolf-excavator'),'SKC_KUBOTA_MINI_EXCAVATOR',all_id['typeCode'])
     all_id['typeCode'] = np.where(all_id['typeCode'].isin(('SKC_KUBOTA_MINI_EXCAVATOR','SKC_KUBOTA_TRACTOR','SKC_KUBOTA_COMBINE_HARVESTER'))==False,'UNDEFINED',all_id['typeCode'])
-    all_id[['unitId','unitName','typeCode']].to_csv("Engine_Detail_Update.csv", index=False, storage_options={'sas_token':sas_token})
+    all_id[['unitId','unitName','typeCode']].to_csv(path + "Engine_Detail_Update.csv", index=False, storage_options={'sas_token':sas_token})
 
     for index,row  in all_id.iterrows():
         if 'เสีย' in row['unitName'] or 'เก่า' in row['unitName'] or 'KRDA' in row['unitName']:
