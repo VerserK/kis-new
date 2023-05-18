@@ -7,3 +7,7 @@ pandas
 numpy==1.22.3
 aiohttp
 azure-storage-blob
+pymssql
+pyodbc
+sqlalchemy
+urllib

@@ -14,3 +14,4 @@ def main(mytimer: func.TimerRequest) -> None:
 
     logging.info('Python timer trigger function ran at %s', utc_timestamp)
     getId.run()
+    API_subscription.run()
