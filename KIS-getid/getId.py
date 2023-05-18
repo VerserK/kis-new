@@ -91,7 +91,7 @@ def run():
     all_id['typeCode'] = np.where(all_id['typeCode'].eq('icon-wolf-tractor_1'),'SKC_KUBOTA_TRACTOR',all_id['typeCode'])
     all_id['typeCode'] = np.where(all_id['typeCode'].eq('icon-wolf-excavator'),'SKC_KUBOTA_MINI_EXCAVATOR',all_id['typeCode'])
     all_id['typeCode'] = np.where(all_id['typeCode'].isin(('SKC_KUBOTA_MINI_EXCAVATOR','SKC_KUBOTA_TRACTOR','SKC_KUBOTA_COMBINE_HARVESTER'))==False,'UNDEFINED',all_id['typeCode'])
-    all_id[['unitId','unitName','typeCode']].to_csv("Engine_Detail_Update.csv",index=False)
+    all_id[['unitId','unitName','typeCode']].to_csv("Engine_Detail_Update.csv", index=False, storage_options={'sas_token':sas_token})
 
     for index,row  in all_id.iterrows():
         if 'เสีย' in row['unitName'] or 'เก่า' in row['unitName'] or 'KRDA' in row['unitName']:
