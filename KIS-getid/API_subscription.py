@@ -85,10 +85,10 @@ def run():
                     ,'Subscription_end_date','Subscription_status','tag']
     result['Subscription_end_date'] = pd.to_datetime(result['Subscription_end_date'], format='%d/%m/%Y')
 
-    server = 'DEV01SVR'
-    database = 'KISRecord'
-    username = 'boon'
-    password = 'tryTh1$@h0me'
+    server = 'skcdwhprdmi.siamkubota.co.th'
+    database = 'KIS Data'
+    username = 'skcadminuser'
+    password = 'DEE@skcdwhtocloud2022prd'
 
     mydb = pymssql.connect(server=server, user=username, password=password, database=database)
 
