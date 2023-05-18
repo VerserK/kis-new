@@ -3,6 +3,7 @@ import logging
 
 import azure.functions as func
 from . import getId
+from . import API_subscription
 
 def main(mytimer: func.TimerRequest) -> None:
     utc_timestamp = datetime.datetime.utcnow().replace(
