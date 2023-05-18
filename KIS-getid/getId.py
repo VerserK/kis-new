@@ -17,6 +17,7 @@ import numpy as np
 from pandas import json_normalize
 import os
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, ContentSettings
+import io
 
 sas_token = "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiyx&se=2023-12-31T16:42:26Z&st=2023-05-17T08:42:26Z&spr=https&sig=1ISnU4nNO0apxAr9C8sNk2TnBTsgv3Y5b2s4GIWlWKQ%3D"
 account_url = "https://kisnewstorage.blob.core.windows.net"
@@ -92,7 +93,11 @@ def run():
     all_id['typeCode'] = np.where(all_id['typeCode'].eq('icon-wolf-tractor_1'),'SKC_KUBOTA_TRACTOR',all_id['typeCode'])
     all_id['typeCode'] = np.where(all_id['typeCode'].eq('icon-wolf-excavator'),'SKC_KUBOTA_MINI_EXCAVATOR',all_id['typeCode'])
     all_id['typeCode'] = np.where(all_id['typeCode'].isin(('SKC_KUBOTA_MINI_EXCAVATOR','SKC_KUBOTA_TRACTOR','SKC_KUBOTA_COMBINE_HARVESTER'))==False,'UNDEFINED',all_id['typeCode'])
-    all_id[['unitId','unitName','typeCode']].to_csv(upload_csv("Engine_Detail_Update.csv"), index=False)
+    writer = io.BytesIO()
+    all_id[['unitId','unitName','typeCode']].to_csv(writer, index=False)
+    blob_client = container_client.get_blob_client('Engine_Detail_Update.csv')
+    blob_client.upload_blob(writer.getvalue(), overwrite = True)
+    print('Upload Engine_Detail_Update Finished')
 
     for index,row  in all_id.iterrows():
         if 'เสีย' in row['unitName'] or 'เก่า' in row['unitName'] or 'KRDA' in row['unitName']:
@@ -104,6 +109,10 @@ def run():
 
     export = all_id[['unitId','unitName']]
     export = export.drop_duplicates()
-    export.to_csv(upload_csv("ALL_ID.csv"),index=False)
-    
+    writer = io.BytesIO()
+    export.to_csv(writer,index=False)
+    blob_client = container_client.get_blob_client('ALL_ID.csv')
+    blob_client.upload_blob(writer.getvalue(), overwrite = True)
+    print('Upload ALL_ID Finished')
+
     print(abs(start-dt.datetime.today()).total_seconds()/60)
