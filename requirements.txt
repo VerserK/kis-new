@@ -10,4 +10,4 @@ azure-storage-blob
 pymssql
 pyodbc
 sqlalchemy
-urllib
+urllib3
