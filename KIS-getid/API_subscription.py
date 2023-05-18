@@ -151,7 +151,7 @@ def run():
     blob_client = BlobClient.from_blob_url("https://kisnewstorage.blob.core.windows.net/apirecord/join_subdrop.csv?sp=r&st=2023-05-18T05:09:09Z&se=2023-12-31T13:09:09Z&spr=https&sv=2022-11-02&sr=b&sig=hqTfwV%2BBgcZdUNuzurCAJDNELdgPQ70mMUnc%2Bd0g9E0%3D")
     download_stream = blob_client.download_blob(max_concurrency=1, encoding='UTF-8')
     join_subdrop = pd.read_csv(StringIO(download_stream.readall()), low_memory=False)
-    import_template.uploadCSV('KISRecord',join_subdrop,'Engine_Detail')
+    import_template.uploadCSV('KIS Data',join_subdrop,'Engine_Detail')
 
     print("FINISH UPLOADING KIS ENGINE_DETAIL")
 

@@ -18,10 +18,10 @@ from datetime import datetime
 
 def uploadCSV(db,filepath,table):
     #start = datetime.today()
-    server = 'DEV01SVR'
+    server = 'skcdwhprdmi.siamkubota.co.th'
     database = db
-    username = 'boon'
-    password = 'tryTh1$@h0me'
+    username = 'skcadminuser'
+    password = 'DEE@skcdwhtocloud2022prd'
     driver = '{ODBC Driver 17 for SQL Server}'  
     dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
     df = pd.read_csv(filepath)
@@ -47,4 +47,4 @@ def uploadCSV(db,filepath,table):
         df.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
     
     print('Finish Upload ' + filepath)
-    os.remove(filepath)
+    # os.remove(filepath)
