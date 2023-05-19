@@ -10,7 +10,7 @@ import math
 from sys import exit
 import numpy as np
 import urllib
-import shapegeocode
+from . import shapegeocode
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, ContentSettings
 
 start = datetime.datetime.today()
