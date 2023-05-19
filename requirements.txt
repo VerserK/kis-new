@@ -12,3 +12,4 @@ pyodbc
 sqlalchemy
 urllib3
 pymssql
+shapefile
