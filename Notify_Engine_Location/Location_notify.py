@@ -10,8 +10,8 @@ import math
 from sys import exit
 import numpy as np
 import urllib
-# from . import shapegeocode
-import shapegeocode
+from . import shapegeocode
+# import shapegeocode
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, ContentSettings
 import io
 from io import StringIO
@@ -36,7 +36,7 @@ def test():
         download_stream = blob_client.download_blob()
         sample_blob.write(download_stream.readall())
     logging.info('Finish Load')
-    
+
 # gc = shapegeocode.geocoder(os.path.join('Notify_Engine_Location/world_countries', 'World_Countries__Generalized_.shp'))
 # thgc = shapegeocode.geocoder(os.path.join('Notify_Engine_Location/tha_adm_rtsd_itos',"tha_admbnda_adm3_rtsd_20220121.shp"))
 # LineToken = 'upoFwEJRyecKFCBfouLgH0ugnCz3QppFaecAsSsca2M'
