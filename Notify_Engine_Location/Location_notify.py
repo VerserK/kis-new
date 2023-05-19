@@ -14,15 +14,16 @@ import shapegeocode
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, ContentSettings
 
 start = datetime.datetime.today()
-geopathc = r"C:\Users\akarawat.p\Desktop\Data for Bridge\KIS\world_countries_generalized"
-gc = shapegeocode.geocoder(os.path.join(geopathc,'World_Countries__Generalized_.shp'))
-print(gc)
+# geopathc = r"C:\Users\akarawat.p\Desktop\Data for Bridge\KIS\world_countries_generalized"
+# gc = shapegeocode.geocoder(os.path.join(geopathc,'World_Countries__Generalized_.shp'))
+
 # blob_client = BlobClient.from_blob_url("https://kisnewstorage.blob.core.windows.net/worldcountriesgeneralized/World_Countries__Generalized_.shp?sp=r&st=2023-05-19T02:00:03Z&se=2023-12-31T10:00:03Z&spr=https&sv=2022-11-02&sr=b&sig=aPvt6ij3F5n8WNDqW%2BQUEM%2FNNs8H4UNUkX%2FdrXFUp28%3D")
 # with open(file=os.path.join('world_countries', 'World_Countries__Generalized_.shp'), mode="wb") as sample_blob:
 #     download_stream = blob_client.download_blob()
 #     sample_blob.write(download_stream.readall())
-gc = shapegeocode.geocoder(os.path.join('Notify_Engine_Location/world_countries', 'World_Countries__Generalized_.shp'))
-print(gc)
+def run():
+    gc = shapegeocode.geocoder(os.path.join('Notify_Engine_Location/world_countries', 'World_Countries__Generalized_.shp'))
+    print(gc)
 # geopath = r"D:\Data for Bridge\KIS\tha_adm_rtsd_itos_20220121_SHP_PART_2"
 # thgc = shapegeocode.geocoder(os.path.join(geopath,"tha_admbnda_adm3_rtsd_20220121.shp"))
 
