@@ -27,7 +27,7 @@ thgc = shapegeocode.geocoder(os.path.join('Notify_Engine_Location/tha_adm_rtsd_i
 
 LineToken = 'upoFwEJRyecKFCBfouLgH0ugnCz3QppFaecAsSsca2M'
 LineToken2 = 'pTfbjW6EG1oWMT7rY0N3v50dqRzg038xjSLbHXF9C4y'
-
+logging.info(LineToken)
 def find_co(thgc,gc,flt,fln,co):
     try:
         loc = thgc.geocode(flt, fln,max_dist=0.2)
