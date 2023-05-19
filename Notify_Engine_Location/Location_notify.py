@@ -21,7 +21,10 @@ account_url = "https://kisnewstorage.blob.core.windows.net"
 container = "thaadmrtsditos"
 blob_service_client = BlobServiceClient(account_url=account_url, credential=sas_token)
 container_client = blob_service_client.get_container_client(container=container)
-
+blob_client = container_client.get_blob_client('tha_admbnda_adm3_rtsd_20220121.shp')
+with open(file=os.path.join('Notify_Engine_Location/tha_adm_rtsd_itos','tha_admbnda_adm3_rtsd_20220121.shp'), mode='wb') as sample_blob:
+    download_stream = blob_client.download_blob()
+    sample_blob.write(download_stream.readall())
 start = datetime.datetime.today()
 # geopathc = r"C:\Users\akarawat.p\Desktop\Data for Bridge\KIS\world_countries_generalized"
 # gc = shapegeocode.geocoder(os.path.join(geopathc,'World_Countries__Generalized_.shp'))
@@ -29,14 +32,12 @@ start = datetime.datetime.today()
 # geopath = r"D:\Data for Bridge\KIS\tha_adm_rtsd_itos_20220121_SHP_PART_2"
 # thgc = shapegeocode.geocoder(os.path.join(geopath,"tha_admbnda_adm3_rtsd_20220121.shp"))
 def test():
-    gc = shapegeocode.geocoder(os.path.join('Notify_Engine_Location/world_countries', 'World_Countries__Generalized_.shp'))
-    read = io.BytesIO()
     blob_client = container_client.get_blob_client('tha_admbnda_adm3_rtsd_20220121.shp')
-    download_stream = blob_client.download_blob()
-    # thgc = shapegeocode.geocoder(blob_client)
-    # print(thgc)
-    thgc = shapegeocode.geocoder(os.path.join('Notify_Engine_Location/tha_adm_rtsd_itos',"tha_admbnda_adm3_rtsd_20220121.shp"))
-
+    with open(file=os.path.join('Notify_Engine_Location/tha_adm_rtsd_itos','tha_admbnda_adm3_rtsd_20220121.shp'), mode='wb') as sample_blob:
+        download_stream = blob_client.download_blob()
+        sample_blob.write(download_stream.readall())
+gc = shapegeocode.geocoder(os.path.join('Notify_Engine_Location/world_countries', 'World_Countries__Generalized_.shp'))
+thgc = shapegeocode.geocoder(os.path.join('Notify_Engine_Location/tha_adm_rtsd_itos',"tha_admbnda_adm3_rtsd_20220121.shp"))
 LineToken = 'upoFwEJRyecKFCBfouLgH0ugnCz3QppFaecAsSsca2M'
 LineToken2 = 'pTfbjW6EG1oWMT7rY0N3v50dqRzg038xjSLbHXF9C4y'
 logging.info(LineToken)
