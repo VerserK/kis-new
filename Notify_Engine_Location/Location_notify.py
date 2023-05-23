@@ -17,7 +17,7 @@ import io
 from io import StringIO
 import logging
 
-sas_token = "sp=racw&st=2023-05-19T06:50:41Z&se=2023-05-19T14:50:41Z&spr=https&sv=2022-11-02&sr=c&sig=QqEeOsJGWW2SFEZqjjVPRfVnUN3pj1tMK6uyiVm%2BaJI%3D"
+sas_token = "sp=racw&st=2023-05-23T07:19:04Z&se=2023-12-31T15:19:04Z&spr=https&sv=2022-11-02&sr=c&sig=uZXkDxIhwdGlkZUNhMhUklgHego4QaaCLo6Rw6TPF2s%3D"
 account_url = "https://kisnewstorage.blob.core.windows.net"
 container = "thaadmrtsditos"
 blob_service_client = BlobServiceClient(account_url=account_url, credential=sas_token)
