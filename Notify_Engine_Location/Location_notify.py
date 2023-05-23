@@ -35,7 +35,8 @@ start = datetime.datetime.today()
 def test():
     blob_client = container_client.get_blob_client('tha_admbnda_adm3_rtsd_20220121.shp')
     tempFilePath = tempfile.gettempdir()
-    logging.info(tempFilePath)
+    fp = tempfile.NamedTemporaryFile()
+    logging.info(fp)
     # with open(os.path.join('/home/site/wwwroot/Notify_Engine_Location/tha_adm_rtsd_itos','tha_admbnda_adm3_rtsd_20220121.shp'), mode='wb') as sample_blob:
     #     download_stream = blob_client.download_blob()
     #     sample_blob.write(download_stream.readall())
