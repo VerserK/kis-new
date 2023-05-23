@@ -16,6 +16,8 @@ from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, C
 import io
 from io import StringIO
 import logging
+import tempfile
+from os import listdir
 
 sas_token = "sp=racw&st=2023-05-23T07:19:04Z&se=2023-12-31T15:19:04Z&spr=https&sv=2022-11-02&sr=c&sig=uZXkDxIhwdGlkZUNhMhUklgHego4QaaCLo6Rw6TPF2s%3D"
 account_url = "https://kisnewstorage.blob.core.windows.net"
@@ -32,9 +34,15 @@ start = datetime.datetime.today()
 # thgc = shapegeocode.geocoder(os.path.join(geopath,"tha_admbnda_adm3_rtsd_20220121.shp"))
 def test():
     blob_client = container_client.get_blob_client('tha_admbnda_adm3_rtsd_20220121.shp')
-    with open(os.path.join('/home/site/wwwroot//Notify_Engine_Location/tha_adm_rtsd_itos','tha_admbnda_adm3_rtsd_20220121.shp'), mode='wb') as sample_blob:
-        download_stream = blob_client.download_blob()
-        sample_blob.write(download_stream.readall())
+    tempFilePath = tempfile.gettempdir()
+    logging.info(tempFilePath)
+    # with open(os.path.join('/home/site/wwwroot/Notify_Engine_Location/tha_adm_rtsd_itos','tha_admbnda_adm3_rtsd_20220121.shp'), mode='wb') as sample_blob:
+    #     download_stream = blob_client.download_blob()
+    #     sample_blob.write(download_stream.readall())
+    # tempFilePath = tempfile.gettempdir()
+    # fp = tempfile.NamedTemporaryFile()
+    # fp.write(b'Hello world!')
+    # filesDirListInTemp = listdir(tempFilePath)
     logging.info('Finish Load')
 
 # gc = shapegeocode.geocoder(os.path.join('Notify_Engine_Location/world_countries', 'World_Countries__Generalized_.shp'))
