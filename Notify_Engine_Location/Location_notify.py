@@ -32,7 +32,7 @@ start = datetime.datetime.today()
 # thgc = shapegeocode.geocoder(os.path.join(geopath,"tha_admbnda_adm3_rtsd_20220121.shp"))
 def test():
     blob_client = container_client.get_blob_client('tha_admbnda_adm3_rtsd_20220121.shp')
-    with open(os.path.join('/tmp/Notify_Engine_Location/tha_adm_rtsd_itos','tha_admbnda_adm3_rtsd_20220121.shp'), mode='wb') as sample_blob:
+    with open(os.path.join('/home/site/wwwroot//Notify_Engine_Location/tha_adm_rtsd_itos','tha_admbnda_adm3_rtsd_20220121.shp'), mode='wb') as sample_blob:
         download_stream = blob_client.download_blob()
         sample_blob.write(download_stream.readall())
     logging.info('Finish Load')
