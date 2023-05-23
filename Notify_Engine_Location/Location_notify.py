@@ -38,7 +38,8 @@ def test():
     with open(os.path.join(tempFilePath,'tha_admbnda_adm3_rtsd_20220121.shp'), mode='wb') as sample_blob:
         download_stream = blob_client.download_blob()
         sample_blob.write(download_stream.readall())
-    logging.info(sample_blob)
+    thgc = shapegeocode.geocoder(os.path.join(tempFilePath,"tha_admbnda_adm3_rtsd_20220121.shp"))
+    logging.info(thgc)
     # tempFilePath = tempfile.gettempdir()
     # fp = tempfile.NamedTemporaryFile()
     # fp.write(b'Hello world!')
