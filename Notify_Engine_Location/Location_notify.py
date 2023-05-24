@@ -35,16 +35,17 @@ def test():
     blob_list = container_client.list_blobs()
     for blob in blob_list:
         logging.info(blob.name)
+        print(blob.name)
         blob_client = container_client.get_blob_client(blob.name)
         tempFilePath = tempfile.gettempdir()
-        with open(os.path.join(tempFilePath,{blob.name}), mode='wb') as sample_blob:
+        with open(os.path.join(tempFilePath,blob.name), mode='wb') as sample_blob:
             download_stream = blob_client.download_blob()
             sample_blob.write(download_stream.readall())
         filesDirListInTemp = listdir(tempFilePath)
     # thgc = shapegeocode.geocoder(os.path.join(tempFilePath,"tha_admbnda_adm3_rtsd_20220121.shp"))
     logging.info(filesDirListInTemp)
     logging.info('Finish Load')
-
+    
 # gc = shapegeocode.geocoder(os.path.join('Notify_Engine_Location/world_countries', 'World_Countries__Generalized_.shp'))
 # thgc = shapegeocode.geocoder(os.path.join('Notify_Engine_Location/tha_adm_rtsd_itos',"tha_admbnda_adm3_rtsd_20220121.shp"))
 # LineToken = 'upoFwEJRyecKFCBfouLgH0ugnCz3QppFaecAsSsca2M'
