@@ -34,7 +34,7 @@ start = datetime.datetime.today()
 def test():
     blob_list = container_client.list_blobs()
     for blob in blob_list:
-        logging.info(blob.name)
+        logging.info({blob.name})
     # blob_client = container_client.get_blob_client('tha_admbnda_adm3_rtsd_20220121.shp')
     # tempFilePath = tempfile.gettempdir()
     # with open(os.path.join(tempFilePath,'tha_admbnda_adm3_rtsd_20220121.shp'), mode='wb') as sample_blob:
