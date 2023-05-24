@@ -24,7 +24,6 @@ account_url = "https://kisnewstorage.blob.core.windows.net"
 container = "thaadmrtsditos"
 blob_service_client = BlobServiceClient(account_url=account_url, credential=sas_token)
 container_client = blob_service_client.get_container_client(container=container)
-blob_client = container_client.get_blob_client('tha_admbnda_adm3_rtsd_20220121.shp')
 
 start = datetime.datetime.today()
 # geopathc = r"C:\Users\akarawat.p\Desktop\Data for Bridge\KIS\world_countries_generalized"
