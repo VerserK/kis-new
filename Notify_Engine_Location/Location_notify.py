@@ -25,7 +25,6 @@ container = "thaadmrtsditos"
 blob_service_client = BlobServiceClient(account_url=account_url, credential=sas_token)
 container_client = blob_service_client.get_container_client(container=container)
 
-start = datetime.datetime.today()
 # geopathc = r"C:\Users\akarawat.p\Desktop\Data for Bridge\KIS\world_countries_generalized"
 # gc = shapegeocode.geocoder(os.path.join(geopathc,'World_Countries__Generalized_.shp'))
 
@@ -78,6 +77,7 @@ def func_LineNotify(Message,LineToken):
     return response 
 
 def run():
+    start = datetime.datetime.today()
     blob_client = BlobClient.from_blob_url("https://kisnewstorage.blob.core.windows.net/apirecord/check_abroad.csv?sp=raw&st=2023-05-19T03:35:34Z&se=2023-12-31T11:35:34Z&spr=https&sv=2022-11-02&sr=b&sig=osOnR1YyokhysQwvDYVQFs3c7w5OmcT%2Fnw3YY7VZKRg%3D")
     download_stream = blob_client.download_blob(max_concurrency=1, encoding='UTF-8')
     file = pd.read_csv(StringIO(download_stream.readall()), low_memory=False)
