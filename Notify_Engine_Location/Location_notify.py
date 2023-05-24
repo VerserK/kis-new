@@ -49,8 +49,8 @@ logging.info('Finish Load')
 
 gc = shapegeocode.geocoder(os.path.join('Notify_Engine_Location/world_countries', 'World_Countries__Generalized_.shp'))
 thgc = shapegeocode.geocoder(os.path.join(tempFilePath,"tha_admbnda_adm3_rtsd_20220121.shp"))
-# LineToken = 'upoFwEJRyecKFCBfouLgH0ugnCz3QppFaecAsSsca2M'
-# LineToken2 = 'pTfbjW6EG1oWMT7rY0N3v50dqRzg038xjSLbHXF9C4y'
+LineToken = 'upoFwEJRyecKFCBfouLgH0ugnCz3QppFaecAsSsca2M'
+LineToken2 = 'pTfbjW6EG1oWMT7rY0N3v50dqRzg038xjSLbHXF9C4y'
 # logging.info(LineToken)
 def find_co(thgc,gc,flt,fln,co):
     try:
@@ -105,76 +105,86 @@ def run():
 
     logging.info("Finish query")
 
-#     l_time = []
-#     l_eq = []
-#     l_lat = []
-#     l_lon = []
-#     l_co = []
-#     check_name = []
+    l_time = []
+    l_eq = []
+    l_lat = []
+    l_lon = []
+    l_co = []
+    check_name = []
 
-#     for i in range(len(thismess)):
-#         thename = thismess['equipmentName'][i]
-#         fco = find_co(thgc, gc, thismess['latitude'][i], thismess['longitude'][i], thismess['Country'][i])
-#         if fco != 'Thailand':
-#             check_name.append(thename)
-#             if thename not in old_name:
-#                 if thename not in l_eq:
-#                     l_eq.append(thename)
-#                     l_time.append(thismess['positionTime'][i])
-#                     l_lat.append(thismess['latitude'][i])
-#                     l_lon.append(thismess['longitude'][i])
-#                     l_co.append(fco)
-#                     #print(thismess[th][1],'\ncoor: (',thismess[th][2],',',thismess[th][3],')\n',fco,'\n')
-#         else:
-#             Message0 = '\n'+str(thename)+' was found near border of Thailand at '+str(thismess['positionTime'][0])
-#             print(Message0)
-#             Response1 = func_LineNotify(Message0,LineToken2)
+    for i in range(len(thismess)):
+        thename = thismess['equipmentName'][i]
+        fco = find_co(thgc, gc, thismess['latitude'][i], thismess['longitude'][i], thismess['Country'][i])
+        if fco != 'Thailand':
+            check_name.append(thename)
+            if thename not in old_name:
+                if thename not in l_eq:
+                    l_eq.append(thename)
+                    l_time.append(thismess['positionTime'][i])
+                    l_lat.append(thismess['latitude'][i])
+                    l_lon.append(thismess['longitude'][i])
+                    l_co.append(fco)
+                    #print(thismess[th][1],'\ncoor: (',thismess[th][2],',',thismess[th][3],')\n',fco,'\n')
+        else:
+            Message0 = '\n'+str(thename)+' was found near border of Thailand at '+str(thismess['positionTime'][0])
+            logging.info(Message0)
+            Response1 = func_LineNotify(Message0,LineToken2)
 
-#     for name in old_name:
-#         if name not in check_name:
-#             old_name.remove(name)
+    for name in old_name:
+        if name not in check_name:
+            old_name.remove(name)
 
-#     len_exist = len(old_name)
+    len_exist = len(old_name)
 
-#     global Current_Date 
-#     Current_Date = datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+    global Current_Date 
+    Current_Date = datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
-#     if len(l_eq) > 0:
-#         old_name+=l_eq
-#         print(old_name)
-#         update = pd.DataFrame(pd.Series(old_name), columns = ['name'])
-#         update = update.to_csv(r'D:\Data for Bridge\KIS\API_Record\check_abroad.csv',index = False)
+    if len(l_eq) > 0:
+        old_name+=l_eq
+        logging.info(old_name)
+        update = pd.DataFrame(pd.Series(old_name), columns = ['name'])
+        writer = io.BytesIO()
+        update.to_csv(writer, index = False)
+        blob_client = container_client.get_blob_client('check_abroad.csv')
+        blob_client.upload_blob(writer.getvalue(), overwrite = True)
+        logging.info('Upload check_abroad Finished')
+        # update = update.to_csv(r'D:\Data for Bridge\KIS\API_Record\check_abroad.csv',index = False)
         
-#         totalcount = len(l_eq)
-#         total = math.ceil(totalcount/6)
-#         count = 0
-#         if totalcount > 0:
-#             for i in range(1,total+1):
-#                 onewin = 6*i - 6
-#                 Message1 = "\n----- Today: "+ str(Current_Date)+"-----\n*Total previously reported: "+str(len_exist)+\
-#                 "*\n*Total new found today: "+str(len(l_eq))+"*"
-#                 for j in range(0,6):
-#                     newin = onewin+j
-#                     try:
-#                         print(l_eq[newin])
-#                     except:
-#                         break
-#                     m = str('\n'+str(count+1)+'. Equipment: '+str(l_eq[newin])+\
-#                               '\n - Position: ('+str(l_lat[newin])+', '+str(l_lon[newin])+')'+ \
-#                               '\n - LastUpdate: '+str(l_time[newin])+'\n - Country: '+ str(l_co[newin]))
-#                     Message1+=m
-#                     count+=1
-#                     if newin == len(l_eq):
-#                         break
-#                 print(Message1)
-#                 Response1 = func_LineNotify(Message1,LineToken)
-#     else:
-#         print(old_name)
-#         Message1 = "\n----- Today: "+ str(Current_Date)+"-----\n*Total previously reported: "+str(len_exist)+"*\n*Total new found today: 0*"
-#         print(Message1)
-#         Response1 = func_LineNotify(Message1,LineToken)
-#         update = pd.DataFrame(pd.Series(old_name), columns = ['name'])
-#         update = update.to_csv(r'D:\Data for Bridge\KIS\API_Record\check_abroad.csv',index = False)
+        totalcount = len(l_eq)
+        total = math.ceil(totalcount/6)
+        count = 0
+        if totalcount > 0:
+            for i in range(1,total+1):
+                onewin = 6*i - 6
+                Message1 = "\n----- Today: "+ str(Current_Date)+"-----\n*Total previously reported: "+str(len_exist)+\
+                "*\n*Total new found today: "+str(len(l_eq))+"*"
+                for j in range(0,6):
+                    newin = onewin+j
+                    try:
+                        print(l_eq[newin])
+                    except:
+                        break
+                    m = str('\n'+str(count+1)+'. Equipment: '+str(l_eq[newin])+\
+                              '\n - Position: ('+str(l_lat[newin])+', '+str(l_lon[newin])+')'+ \
+                              '\n - LastUpdate: '+str(l_time[newin])+'\n - Country: '+ str(l_co[newin]))
+                    Message1+=m
+                    count+=1
+                    if newin == len(l_eq):
+                        break
+                logging.info(Message1)
+                Response1 = func_LineNotify(Message1,LineToken2)
+    else:
+        logging.info(old_name)
+        Message1 = "\n----- Today: "+ str(Current_Date)+"-----\n*Total previously reported: "+str(len_exist)+"*\n*Total new found today: 0*"
+        logging.info(Message1)
+        Response1 = func_LineNotify(Message1,LineToken2)
+        update = pd.DataFrame(pd.Series(old_name), columns = ['name'])
+        writer = io.BytesIO()
+        update.to_csv(writer, index = False)
+        blob_client = container_client.get_blob_client('check_abroad.csv')
+        blob_client.upload_blob(writer.getvalue(), overwrite = True)
+        logging.info('Upload check_abroad Finished')
+        # update = update.to_csv(r'D:\Data for Bridge\KIS\API_Record\check_abroad.csv',index = False)
 
-#     end = datetime.datetime.today()
-#     print((end-start).total_seconds(),' sec')
+    end = datetime.datetime.today()
+    logging.info((end-start).total_seconds(),' sec')
