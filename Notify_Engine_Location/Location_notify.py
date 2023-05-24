@@ -33,18 +33,17 @@ start = datetime.datetime.today()
 # geopath = r"D:\Data for Bridge\KIS\tha_adm_rtsd_itos_20220121_SHP_PART_2"
 # thgc = shapegeocode.geocoder(os.path.join(geopath,"tha_admbnda_adm3_rtsd_20220121.shp"))
 def test():
-    blob_client = container_client.get_blob_client('tha_admbnda_adm3_rtsd_20220121.shp')
-    tempFilePath = tempfile.gettempdir()
-    with open(os.path.join(tempFilePath,'tha_admbnda_adm3_rtsd_20220121.shp'), mode='wb') as sample_blob:
-        download_stream = blob_client.download_blob()
-        sample_blob.write(download_stream.readall())
-    filesDirListInTemp = listdir(tempFilePath)
-    # thgc = shapegeocode.geocoder(os.path.join(tempFilePath,"tha_admbnda_adm3_rtsd_20220121.shp"))
-    logging.info(filesDirListInTemp)
+    blob_list = container_client.list_blobs()
+    for blob in blob_list:
+        logging.info(blob.name)
+    # blob_client = container_client.get_blob_client('tha_admbnda_adm3_rtsd_20220121.shp')
     # tempFilePath = tempfile.gettempdir()
-    # fp = tempfile.NamedTemporaryFile()
-    # fp.write(b'Hello world!')
+    # with open(os.path.join(tempFilePath,'tha_admbnda_adm3_rtsd_20220121.shp'), mode='wb') as sample_blob:
+    #     download_stream = blob_client.download_blob()
+    #     sample_blob.write(download_stream.readall())
     # filesDirListInTemp = listdir(tempFilePath)
+    # # thgc = shapegeocode.geocoder(os.path.join(tempFilePath,"tha_admbnda_adm3_rtsd_20220121.shp"))
+    # logging.info(filesDirListInTemp)
     logging.info('Finish Load')
 
 # gc = shapegeocode.geocoder(os.path.join('Notify_Engine_Location/world_countries', 'World_Countries__Generalized_.shp'))
