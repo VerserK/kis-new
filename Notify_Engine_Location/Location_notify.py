@@ -34,8 +34,8 @@ start = datetime.datetime.today()
 def test():
     blob_list = container_client.list_blobs()
     for blob in blob_list:
-        logging.info({blob.name})
-        blob_client = container_client.get_blob_client({blob.name})
+        logging.info(blob.name)
+        blob_client = container_client.get_blob_client(blob.name)
         tempFilePath = tempfile.gettempdir()
         with open(os.path.join(tempFilePath,{blob.name}), mode='wb') as sample_blob:
             download_stream = blob_client.download_blob()
