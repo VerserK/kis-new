@@ -187,4 +187,4 @@ def run():
         # update = update.to_csv(r'D:\Data for Bridge\KIS\API_Record\check_abroad.csv',index = False)
 
     end = datetime.datetime.today()
-    logging.info((end-start).total_seconds(),' sec')
+    logging.info(end)
