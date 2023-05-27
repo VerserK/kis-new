@@ -82,7 +82,8 @@ def run():
     ## Main Script ##
     blob_list = container_client_raw.list_blobs()
     for blob in blob_list:
-        # logging.info("inverse geo file:",blob.name)
+        blobname = blob.name
+        logging.info("inverse geo file:" + str(blobname))
         blob_client = container_client_raw.get_blob_client(blob.name)
         blobstr = blob_client.download_blob(max_concurrency=1, encoding='UTF-8').readall()
         df = pd.read_csv(StringIO(blobstr))
@@ -104,7 +105,7 @@ def run():
     blob_list = container_client_loc.list_blobs()
     for blob in blob_list:
         blobname = blob.name
-        logging.info("upload file:",str(blobname))
+        logging.info("upload file:" + str(blobname))
         try:
             try:
                 blob_client = container_client_raw.get_blob_client(blob.name)
