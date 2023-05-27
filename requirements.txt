@@ -13,3 +13,5 @@ sqlalchemy
 urllib3
 pymssql
 pyshp
+geopandas
+shapely
