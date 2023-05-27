@@ -82,7 +82,7 @@ def run():
     ## Main Script ##
     blob_list = container_client_raw.list_blobs()
     for blob in blob_list:
-        logging.info("inverse geo file:",blob.name)
+        # logging.info("inverse geo file:",blob.name)
         blob_client = container_client_raw.get_blob_client(blob.name)
         blobstr = blob_client.download_blob(max_concurrency=1, encoding='UTF-8').readall()
         df = pd.read_csv(StringIO(blobstr))
@@ -96,7 +96,7 @@ def run():
         blob_client = container_client_loc.get_blob_client(blob.name)
         blob_client.upload_blob(writer.getvalue(), overwrite = True)
 
-    logging.info("--- %s seconds ---" % (time.time() - start_time))
+    # logging.info("--- %s seconds ---" % (time.time() - start_time))
 
     logging.info(dt.datetime.today())
         
