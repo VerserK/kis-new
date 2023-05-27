@@ -137,7 +137,8 @@ def run():
     len_exist = len(old_name)
 
     global Current_Date 
-    Current_Date = datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S') + datetime.timedelta(hours=7)
+    Current_Date = datetime.datetime.today() + datetime.timedelta(hours=7)
+    Current_Date = Current_Date.strftime('%Y-%m-%d %H:%M:%S')
     
     if len(l_eq) > 0:
         old_name+=l_eq
