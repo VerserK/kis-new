@@ -81,7 +81,9 @@ def run(thedate):
             payloads.append({"fromDate":fromDate,"toDate":toDate,"start":0,"limit":8317,"unitIds":idList[i:i+20],"showAll":True})
         logging.info('Start 1st Acquire')
         
-        loop = asyncio.get_event_loop()
+        # loop = asyncio.get_event_loop()
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
         resHis = loop.run_until_complete(post_multipayload(urlHis,headers,payloads, loop))
         logging.info('Finish 1st Acquire')
 
