@@ -37,11 +37,11 @@ def func_LineNotify(Message,LineToken):
 
 def uploadCSV(filepath,table):
     start = datetime.today()
-    server = 'consentdb.database.windows.net'
-    database = 'kis-hour-test'
-    username = 'consent-user'
-    password = 'P@ssc0de123'
-    driver = '{ODBC Driver 13 for SQL Server}'  
+    server = 'dwhsqldev01.database.windows.net'
+    database = 'KISRecord'
+    username = 'boon'
+    password = 'DEE@DA123'
+    driver = '{ODBC Driver 17 for SQL Server}'  
     dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
     df = pd.read_csv(filepath)
     df['positionTime'] = pd.to_datetime(df['positionTime'], format='%d/%m/%Y %H:%M:%S')
@@ -56,27 +56,27 @@ def uploadCSV(filepath,table):
     df['Country'] = np.where((df['Country']!= 'Thailand')&(df['ADM3_PCODE'].str.startswith('TH')),'Thailand',df['Country'])
     df = df.drop_duplicates(subset = ['EquipmentName','statusDesc','positionTime','notes','latitude','longitude'], keep='first')
     row = len(df)
-    # params = urllib.parse.quote_plus(dsn)
+    params = urllib.parse.quote_plus(dsn)
 
-    # #delete_q = "Delete from "+table+"] where cast(positionTime as date) = '"+df['positionTime'][0].strftime('%Y-%m-%d')+"' and "
-    # engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
-    # conn = engine.connect()
+    #delete_q = "Delete from "+table+"] where cast(positionTime as date) = '"+df['positionTime'][0].strftime('%Y-%m-%d')+"' and "
+    engine = sa.create_engine('mssql+pyodbc:///?odbc_connect=%s' % params)
+    conn = engine.connect()
     
-    # cycle = 10000
+    cycle = 10000
     
-    # @event.listens_for(conn, "before_cursor_execute")
-    # def receive_before_cursor_execute(conn, cursor, statement, params, context, executemany):
-    #     if executemany:
-    #         cursor.fast_executemany = True
-    # if len(df.index) >= cycle:
-    #     for i in range(0,len(df.index)//cycle):
-    #         print('chunk: ' + str(i))
-    #         dftemp = df[i*cycle:(i*cycle) + cycle]
-    #         dftemp.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
-    #     dftemp = df[cycle*(len(df.index)//cycle):]
-    #     dftemp.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
-    # else:
-    #     df.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
+    @event.listens_for(conn, "before_cursor_execute")
+    def receive_before_cursor_execute(conn, cursor, statement, params, context, executemany):
+        if executemany:
+            cursor.fast_executemany = True
+    if len(df.index) >= cycle:
+        for i in range(0,len(df.index)//cycle):
+            print('chunk: ' + str(i))
+            dftemp = df[i*cycle:(i*cycle) + cycle]
+            dftemp.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
+        dftemp = df[cycle*(len(df.index)//cycle):]
+        dftemp.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
+    else:
+        df.to_sql(table, con=conn,if_exists = 'append', index=False, schema="dbo")
     
     print('Finish Upload ' + table)
     os.remove(filepath)
