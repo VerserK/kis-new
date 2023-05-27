@@ -103,7 +103,8 @@ def run():
     ## Main Script ##
     blob_list = container_client_loc.list_blobs()
     for blob in blob_list:
-        logging.info("upload file:",blob.name)
+        blobname = blob.name
+        logging.info("upload file:",blobname)
         try:
             try:
                 blob_client = container_client_raw.get_blob_client(blob.name)
