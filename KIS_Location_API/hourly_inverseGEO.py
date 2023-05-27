@@ -96,7 +96,7 @@ def run():
         blob_client = container_client_loc.get_blob_client(blob.name)
         blob_client.upload_blob(writer.getvalue(), overwrite = True)
 
-    # logging.info("--- %s seconds ---" % (time.time() - start_time))
+    logging.info("--- %s seconds ---" % (time.time() - start_time))
 
     logging.info(dt.datetime.today())
         
@@ -104,7 +104,7 @@ def run():
     blob_list = container_client_loc.list_blobs()
     for blob in blob_list:
         blobname = blob.name
-        logging.info("upload file:",blobname)
+        logging.info("upload file:",str(blobname))
         try:
             try:
                 blob_client = container_client_raw.get_blob_client(blob.name)
