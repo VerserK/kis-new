@@ -129,7 +129,6 @@ def run(thedate):
         # df.to_csv(os.path.join(r'D:\Data for Bridge\KIS\API_Record\raw',FileName),index=False)
         finish = datetime.today()
         finish = finish.strftime('%Y-%m-%d')
-        start_time = start_time.strftime('%Y-%m-%d')
         logging.info('Finished Run: ', finish,'\n Spending (mins): ', (time.time() - start_time)/60)
         return FileName
     else:
