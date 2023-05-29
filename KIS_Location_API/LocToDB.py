@@ -83,5 +83,5 @@ def uploadCSV(filepath,table):
     fpath, fname = os.path.split(filepath)
     blob_client = container_client_loc.get_blob_client(fname)
     blob_client.delete_blob()
-    func_LineNotify(fname,'XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e')
+    # func_LineNotify(fname,'XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e')
     return df
