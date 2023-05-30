@@ -20,6 +20,7 @@ from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, C
 import io
 from io import StringIO
 import logging
+import requests
 
 sas_token = "sp=racwdli&st=2023-05-25T07:09:19Z&se=2023-12-31T15:09:19Z&spr=https&sv=2022-11-02&sr=c&sig=iKsoTBoyaBsVNa7wy7OiSaiylpC8IaJ1EvMlcv5TaM0%3D"
 account_url = "https://kisnewstorage.blob.core.windows.net"
@@ -48,6 +49,15 @@ async def post_multipayload(url,headers,payloads, loop):
     async with ClientSession(connector=connector, loop=loop) as session:
         results = await asyncio.gather(*[post(session, url, headers, payload) for payload in payloads], return_exceptions=True)
         return results
+    
+def func_LineNotify(Message,LineToken):
+    url  = "https://notify-api.line.me/api/notify"
+    msn = {'message':Message}
+    LINE_HEADERS = {"Authorization":"Bearer " + LineToken}
+    session  = requests.Session()
+    response =session.post(url, headers=LINE_HEADERS, data=msn)
+    return response 
+
 def run(thedate):
     logging.info(thedate)
     if isinstance(thedate, dt.datetime):
@@ -94,6 +104,8 @@ def run(thedate):
                 df = pd.concat([df,json_normalize(resHis[i]['items'])])
             except Exception as e:
                 # logging.info(resHis[i],e)
+                func_LineNotify(resHis[i],'XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e')
+                func_LineNotify(e,'XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e')
                 exit()
     
         j = 0
