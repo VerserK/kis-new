@@ -173,12 +173,12 @@ def run():
                     if newin == len(l_eq):
                         break
                 logging.info(Message1)
-                Response1 = func_LineNotify(Message1,LineToken2)
+                Response1 = func_LineNotify(Message1,LineToken)
     else:
         logging.info(old_name)
         Message1 = "\n----- Today: "+ str(Current_Date)+"-----\n*Total previously reported: "+str(len_exist)+"*\n*Total new found today: 0*"
         logging.info(Message1)
-        Response1 = func_LineNotify(Message1,LineToken2)
+        Response1 = func_LineNotify(Message1,LineToken)
         update = pd.DataFrame(pd.Series(old_name), columns = ['name'])
         writer = io.BytesIO()
         update.to_csv(writer, index = False)

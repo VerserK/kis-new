@@ -37,10 +37,10 @@ def func_LineNotify(Message,LineToken):
 
 def uploadCSV(filepath,table):
     start = datetime.today()
-    server = 'dwhsqldev01.database.windows.net'
-    database = 'KISRecord'
-    username = 'boon'
-    password = 'DEE@DA123'
+    server = 'consentdb.database.windows.net'
+    database = 'kis-hour-test'
+    username = 'consent-user'
+    password = 'P@ssc0de123'
     driver = '{ODBC Driver 17 for SQL Server}'  
     dsn = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password
     df = pd.read_csv(filepath)
