@@ -146,8 +146,7 @@ def run(thedate):
     else:
         logging.info('Wrong input type: INPUT is not DATETIME type')
         return ''
-thedate = dt.datetime.today() + dt.timedelta(hours=7)
-run(thedate)
+
 # if __name__ == '__main__':
 #     thedate = datetime.today() #- dt.timedelta(hours=13)
 #     print(thedate)
