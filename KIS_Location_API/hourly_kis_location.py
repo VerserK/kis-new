@@ -63,89 +63,90 @@ def run(thedate):
     if isinstance(thedate, dt.datetime):
         logging.info('### Preparation ###')
         headers = {"Authorization": "Bearer 06b4aa5b-dafd-4971-b600-0b862b723209"}
-        start = thedate - dt.timedelta(hours=2)
-        logging.info('### Get Unit ID ###')
-        blob_client = BlobClient.from_blob_url("https://kisnewstorage.blob.core.windows.net/apirecord/ALL_ID.csv?sp=racwdyi&st=2023-05-25T07:15:23Z&se=2023-12-31T15:15:23Z&spr=https&sv=2022-11-02&sr=b&sig=6OaJxePT75%2F8ivlZyTjVkX9%2Fec2t0FUB5yW%2B8Id0tCg%3D")
-        download_stream = blob_client.download_blob(max_concurrency=1, encoding='UTF-8')
-        all_id = pd.read_csv(StringIO(download_stream.readall()), low_memory=False)
-        # all_id = pd.read_csv(r'D:\Data for Bridge\KIS\API_Record\All_ID.csv')
-        idList = all_id['unitId'].drop_duplicates().to_list()
-        logging.info(len(idList))
-        try:
-            idList.remove('fd79a9f5-074c-5e94-8179-48e34ffb836b')
-        except:
-            logging.info('equip was removed.')
-        logging.info(len(idList))
-        logging.info('### Get Location ###')
-        start_time = time.time()
+        func_LineNotify(thedate,'XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e')
+    #     start = thedate - dt.timedelta(hours=2)
+    #     logging.info('### Get Unit ID ###')
+    #     blob_client = BlobClient.from_blob_url("https://kisnewstorage.blob.core.windows.net/apirecord/ALL_ID.csv?sp=racwdyi&st=2023-05-25T07:15:23Z&se=2023-12-31T15:15:23Z&spr=https&sv=2022-11-02&sr=b&sig=6OaJxePT75%2F8ivlZyTjVkX9%2Fec2t0FUB5yW%2B8Id0tCg%3D")
+    #     download_stream = blob_client.download_blob(max_concurrency=1, encoding='UTF-8')
+    #     all_id = pd.read_csv(StringIO(download_stream.readall()), low_memory=False)
+    #     # all_id = pd.read_csv(r'D:\Data for Bridge\KIS\API_Record\All_ID.csv')
+    #     idList = all_id['unitId'].drop_duplicates().to_list()
+    #     logging.info(len(idList))
+    #     try:
+    #         idList.remove('fd79a9f5-074c-5e94-8179-48e34ffb836b')
+    #     except:
+    #         logging.info('equip was removed.')
+    #     logging.info(len(idList))
+    #     logging.info('### Get Location ###')
+    #     start_time = time.time()
 
-        df = pd.DataFrame()
-        payloads = []
-        countPoint = []
-        urlHis = 'https://wolf-prp-prod-head-api.propulsetelematics.com/report/api/history/units/position-list'
-        fromDate = start.strftime('%Y-%m-%dT%H:00:00.500+07:00')
-        toDate = start.strftime('%Y-%m-%dT%H:59:59.999+07:00')
-        logging.info('### START: ' + fromDate + '\nEND: ' + toDate)
+    #     df = pd.DataFrame()
+    #     payloads = []
+    #     countPoint = []
+    #     urlHis = 'https://wolf-prp-prod-head-api.propulsetelematics.com/report/api/history/units/position-list'
+    #     fromDate = start.strftime('%Y-%m-%dT%H:00:00.500+07:00')
+    #     toDate = start.strftime('%Y-%m-%dT%H:59:59.999+07:00')
+    #     logging.info('### START: ' + fromDate + '\nEND: ' + toDate)
         
-        for i in range(0, len(idList), 20):
-            payloads.append({"fromDate":fromDate,"toDate":toDate,"start":0,"limit":8317,"unitIds":idList[i:i+20],"showAll":True})
-        logging.info('Start 1st Acquire')
+    #     for i in range(0, len(idList), 20):
+    #         payloads.append({"fromDate":fromDate,"toDate":toDate,"start":0,"limit":8317,"unitIds":idList[i:i+20],"showAll":True})
+    #     logging.info('Start 1st Acquire')
         
-        # loop = asyncio.get_event_loop()
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        resHis = loop.run_until_complete(post_multipayload(urlHis,headers,payloads, loop))
-        logging.info('Finish 1st Acquire')
+    #     # loop = asyncio.get_event_loop()
+    #     loop = asyncio.new_event_loop()
+    #     asyncio.set_event_loop(loop)
+    #     resHis = loop.run_until_complete(post_multipayload(urlHis,headers,payloads, loop))
+    #     logging.info('Finish 1st Acquire')
 
-        for i in range(0,len(resHis)):
-            #print(i)
-            try:
-                countPoint.append(resHis[i]['totalCount'])
-                df = pd.concat([df,json_normalize(resHis[i]['items'])])
-            except Exception as e:
-                # logging.info(resHis[i],e)
-                func_LineNotify(resHis[i],'XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e')
-                func_LineNotify(e,'XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e')
-                exit()
+    #     for i in range(0,len(resHis)):
+    #         #print(i)
+    #         try:
+    #             countPoint.append(resHis[i]['totalCount'])
+    #             df = pd.concat([df,json_normalize(resHis[i]['items'])])
+    #         except Exception as e:
+    #             # logging.info(resHis[i],e)
+    #             func_LineNotify(resHis[i],'XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e')
+    #             func_LineNotify(e,'XVDGomv0AlT1oztR2Ntyad7nWUYvBWU7XLHPREQYm6e')
+    #             exit()
     
-        j = 0
-        payloads = []
-        for i in range(0,len(countPoint)):   
-            n = math.ceil(countPoint[i]/8317)
-            if n > 1:
-                for k in range(1,n+1):
-                    j += 1
-                    payloads.append({"fromDate":fromDate,"toDate":toDate,"start":k*8317,"limit":8317,"unitIds":idList[i*20:(i*20)+20],"showAll":True})
-        if(j > 0):
-            logging.info('Start 2nd Acquire for:' + str(j) + ' req')
-            loop = asyncio.get_event_loop()
-            resHis = loop.run_until_complete(post_multipayload(urlHis,headers,payloads, loop))
-            logging.info('Finish 2nd Acquire')
-            logging.info(resHis)
-            for i in range(0,len(resHis)):
-                df = pd.concat(df,json_normalize(resHis[i]['items']))
-                #print(resHis[i])
+    #     j = 0
+    #     payloads = []
+    #     for i in range(0,len(countPoint)):   
+    #         n = math.ceil(countPoint[i]/8317)
+    #         if n > 1:
+    #             for k in range(1,n+1):
+    #                 j += 1
+    #                 payloads.append({"fromDate":fromDate,"toDate":toDate,"start":k*8317,"limit":8317,"unitIds":idList[i*20:(i*20)+20],"showAll":True})
+    #     if(j > 0):
+    #         logging.info('Start 2nd Acquire for:' + str(j) + ' req')
+    #         loop = asyncio.get_event_loop()
+    #         resHis = loop.run_until_complete(post_multipayload(urlHis,headers,payloads, loop))
+    #         logging.info('Finish 2nd Acquire')
+    #         logging.info(resHis)
+    #         for i in range(0,len(resHis)):
+    #             df = pd.concat(df,json_normalize(resHis[i]['items']))
+    #             #print(resHis[i])
         
-        df['longitude'] = df['position.coordinates'].str[0].astype(str)
-        df['latitude'] = df['position.coordinates'].str[1].astype(str)
-        df = df.drop(columns=['positionId', 'position.type', 'position.coordinates'])
-        FileName = 'Location_'+ start.strftime('%Y-%m-%dT%H') + '.csv'
-        df.sort_values(by='speed', ascending=True, na_position='first')
-        df = df.drop_duplicates(subset=['positionTime','unitId', 'unitName','notes', 'statusDesc', 'statusColor', 'latitude', 'longitude'], keep='last')
+    #     df['longitude'] = df['position.coordinates'].str[0].astype(str)
+    #     df['latitude'] = df['position.coordinates'].str[1].astype(str)
+    #     df = df.drop(columns=['positionId', 'position.type', 'position.coordinates'])
+    #     FileName = 'Location_'+ start.strftime('%Y-%m-%dT%H') + '.csv'
+    #     df.sort_values(by='speed', ascending=True, na_position='first')
+    #     df = df.drop_duplicates(subset=['positionTime','unitId', 'unitName','notes', 'statusDesc', 'statusColor', 'latitude', 'longitude'], keep='last')
 
-        writer = io.BytesIO()
-        df.to_csv(writer, index = False)
-        blob_client = container_client.get_blob_client(FileName)
-        blob_client.upload_blob(writer.getvalue(), overwrite = True)
-        logging.info('Upload subscription_date Finished')
-        # df.to_csv(os.path.join(r'D:\Data for Bridge\KIS\API_Record\raw',FileName),index=False)
-        finish = datetime.today()
-        finish = finish.strftime('%Y-%m-%d')
-        logging.info('Finished Run: '+ finish)
-        return FileName
-    else:
-        logging.info('Wrong input type: INPUT is not DATETIME type')
-        return ''
+    #     writer = io.BytesIO()
+    #     df.to_csv(writer, index = False)
+    #     blob_client = container_client.get_blob_client(FileName)
+    #     blob_client.upload_blob(writer.getvalue(), overwrite = True)
+    #     logging.info('Upload subscription_date Finished')
+    #     # df.to_csv(os.path.join(r'D:\Data for Bridge\KIS\API_Record\raw',FileName),index=False)
+    #     finish = datetime.today()
+    #     finish = finish.strftime('%Y-%m-%d')
+    #     logging.info('Finished Run: '+ finish)
+    #     return FileName
+    # else:
+    #     logging.info('Wrong input type: INPUT is not DATETIME type')
+    #     return ''
 
 # if __name__ == '__main__':
 #     thedate = datetime.today() #- dt.timedelta(hours=13)

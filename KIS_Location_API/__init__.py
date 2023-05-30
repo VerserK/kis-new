@@ -15,4 +15,4 @@ def main(mytimer: func.TimerRequest) -> None:
     logging.info('Python timer trigger function ran at %s', utc_timestamp)
     thedate = datetime.datetime.today() #+ datetime.timedelta(hours=7)
     hourly_kis_location.run(thedate)
-    hourly_inverseGEO.run()
+    # hourly_inverseGEO.run()
