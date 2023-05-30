@@ -93,7 +93,7 @@ def run(thedate):
                 countPoint.append(resHis[i]['totalCount'])
                 df = pd.concat([df,json_normalize(resHis[i]['items'])])
             except Exception as e:
-                logging.info(resHis[i],e)
+                # logging.info(resHis[i],e)
                 exit()
     
         j = 0
