@@ -102,7 +102,9 @@ def run(thedate):
                     payloads.append({"fromDate":fromDate,"toDate":toDate,"start":k*8317,"limit":8317,"unitIds":idList[i*20:(i*20)+20],"showAll":True})
         if(j > 0):
             logging.info('Start 2nd Acquire for:' + str(j) + ' req')
-            loop = asyncio.get_event_loop()
+            # loop = asyncio.get_event_loop()
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
             resHis = loop.run_until_complete(post_multipayload(urlHis,headers,payloads, loop))
             logging.info('Finish 2nd Acquire')
             
