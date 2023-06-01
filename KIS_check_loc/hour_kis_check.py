@@ -129,7 +129,8 @@ def run(thedate):
         finish = datetime.today()
         finish = finish.strftime('%Y-%m-%d')
         endtime = (time.time() - start_time)/60
-        logging.info('Finished Run: ', finish,'\n Spending (mins): ', str(endtime))
+        endtime = str(endtime)
+        logging.info('Finished Run: ', finish,'\n Spending (mins): ', endtime)
         return FileName
     else:
         logging.info('Wrong input type: INPUT is not DATETIME type')
