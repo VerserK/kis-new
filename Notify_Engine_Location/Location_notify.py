@@ -19,11 +19,16 @@ import logging
 import tempfile
 from os import listdir
 
-sas_token = "sp=racwdli&st=2023-05-24T01:35:57Z&se=2023-12-31T09:35:57Z&spr=https&sv=2022-11-02&sr=c&sig=VTgf9ZFMqGKgXM5LN%2FewdPJAOaD1amp%2Bor7wFjBKOVo%3D"
+sas_token = "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiyx&se=2023-12-31T09:29:51Z&st=2023-06-19T01:29:51Z&spr=https&sig=11vl35OimQdoovdHp%2FFm96RUvj4g%2Ftnds6qqNE%2BoMuw%3D"
 account_url = "https://kisnewstorage.blob.core.windows.net"
+
 container = "thaadmrtsditos"
 blob_service_client = BlobServiceClient(account_url=account_url, credential=sas_token)
 container_client = blob_service_client.get_container_client(container=container)
+
+container_api = "apirecord"
+blob_service_client_api = BlobServiceClient(account_url=account_url, credential=sas_token)
+container_client_api = blob_service_client_api.get_container_client(container=container_api)
 
 # geopathc = r"C:\Users\akarawat.p\Desktop\Data for Bridge\KIS\world_countries_generalized"
 # gc = shapegeocode.geocoder(os.path.join(geopathc,'World_Countries__Generalized_.shp'))
@@ -146,7 +151,7 @@ def run():
         update = pd.DataFrame(pd.Series(old_name), columns = ['name'])
         writer = io.BytesIO()
         update.to_csv(writer, index = False)
-        blob_client = container_client.get_blob_client('check_abroad.csv')
+        blob_client = container_client_api.get_blob_client('check_abroad.csv')
         blob_client.upload_blob(writer.getvalue(), overwrite = True)
         logging.info('Upload check_abroad Finished')
         # update = update.to_csv(r'D:\Data for Bridge\KIS\API_Record\check_abroad.csv',index = False)
@@ -182,7 +187,7 @@ def run():
         update = pd.DataFrame(pd.Series(old_name), columns = ['name'])
         writer = io.BytesIO()
         update.to_csv(writer, index = False)
-        blob_client = container_client.get_blob_client('check_abroad.csv')
+        blob_client = container_client_api.get_blob_client('check_abroad.csv')
         blob_client.upload_blob(writer.getvalue(), overwrite = True)
         logging.info('Upload check_abroad Finished')
         # update = update.to_csv(r'D:\Data for Bridge\KIS\API_Record\check_abroad.csv',index = False)
