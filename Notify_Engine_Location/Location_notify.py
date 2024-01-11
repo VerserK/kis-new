@@ -19,7 +19,7 @@ import logging
 import tempfile
 from os import listdir
 
-sas_token = "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiyx&se=2023-12-31T09:29:51Z&st=2023-06-19T01:29:51Z&spr=https&sig=11vl35OimQdoovdHp%2FFm96RUvj4g%2Ftnds6qqNE%2BoMuw%3D"
+sas_token = "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiyx&se=2030-01-11T22:19:05Z&st=2024-01-11T14:19:05Z&spr=https&sig=4CdQwKPBtl8oAO1i9mzhirC8qKVPOrwhXh7REZicylU%3D"
 account_url = "https://kisnewstorage.blob.core.windows.net"
 
 container = "thaadmrtsditos"
@@ -83,7 +83,7 @@ def func_LineNotify(Message,LineToken):
 
 def run():
     start = datetime.datetime.today()
-    blob_client = BlobClient.from_blob_url("https://kisnewstorage.blob.core.windows.net/apirecord/check_abroad.csv?sp=raw&st=2023-05-19T03:35:34Z&se=2023-12-31T11:35:34Z&spr=https&sv=2022-11-02&sr=b&sig=osOnR1YyokhysQwvDYVQFs3c7w5OmcT%2Fnw3YY7VZKRg%3D")
+    blob_client = BlobClient.from_blob_url("https://kisnewstorage.blob.core.windows.net/apirecord/check_abroad.csv?sp=racwdyi&st=2024-01-11T14:24:06Z&se=2030-01-11T22:24:06Z&spr=https&sv=2022-11-02&sr=b&sig=XE3hSa4FOgu3YPiXQW9JauzIkEXi5xQzbu10LlOrZys%3D")
     download_stream = blob_client.download_blob(max_concurrency=1, encoding='UTF-8')
     file = pd.read_csv(StringIO(download_stream.readall()), low_memory=False)
     # file = pd.read_csv(r'D:\Data for Bridge\KIS\API_Record\check_abroad.csv')

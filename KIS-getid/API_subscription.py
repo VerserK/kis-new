@@ -20,7 +20,7 @@ import io
 from io import StringIO
 from . import import_template
 
-sas_token = "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiyx&se=2023-12-31T16:42:26Z&st=2023-05-17T08:42:26Z&spr=https&sig=1ISnU4nNO0apxAr9C8sNk2TnBTsgv3Y5b2s4GIWlWKQ%3D"
+sas_token = "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiyx&se=2030-01-11T22:19:05Z&st=2024-01-11T14:19:05Z&spr=https&sig=4CdQwKPBtl8oAO1i9mzhirC8qKVPOrwhXh7REZicylU%3D"
 account_url = "https://kisnewstorage.blob.core.windows.net"
 container = "apirecord"
 blob_service_client = BlobServiceClient(account_url=account_url, credential=sas_token)
@@ -36,7 +36,7 @@ def func_LineNotify(Message,LineToken):
 
 def subjob():
     start = dt.datetime.today()
-    headers = {"Authorization": "Bearer 06b4aa5b-dafd-4971-b600-0b862b723209"}
+    headers = {"Authorization": "Bearer e814eb26-c947-44f2-bd31-cc9aabfe841f"}
     all_exp = pd.DataFrame()
     urlExp = 'https://wolf-prp-prod-head-api.propulsetelematics.com/report/api/subscription/expirations?start=0&limit=50&filter=&offsetUTC=7'
     resExp = requests.get(urlExp, headers=headers)
@@ -63,7 +63,7 @@ def subjob():
     return all_exp
 def run():
     subfile = subjob()
-    blob_client = BlobClient.from_blob_url("https://kisnewstorage.blob.core.windows.net/apirecord/subscription_date.csv?sp=r&st=2023-05-18T03:55:13Z&se=2023-12-31T11:55:13Z&spr=https&sv=2022-11-02&sr=b&sig=Ut8aMqPiDH09vonN2LIPVRAHjKmzKSMxWvRbk0rYN74%3D")
+    blob_client = BlobClient.from_blob_url("https://kisnewstorage.blob.core.windows.net/apirecord/subscription_date.csv?sp=racwdyi&st=2024-01-11T14:22:12Z&se=2030-01-11T22:22:12Z&spr=https&sv=2022-11-02&sr=b&sig=4LeEM3PCjuX2nnvysMY891pxwipaTBVre%2BwuHw%2BBXpE%3D")
     download_stream = blob_client.download_blob(max_concurrency=1, encoding='UTF-8')
     subfile = pd.read_csv(StringIO(download_stream.readall()), low_memory=False)
 
@@ -71,7 +71,7 @@ def run():
 
     print("start")
     today = dt.datetime.today()
-    blob_client = BlobClient.from_blob_url("https://kisnewstorage.blob.core.windows.net/apirecord/Engine_Detail_Update.csv?sp=r&st=2023-05-18T04:53:36Z&se=2023-12-31T12:53:36Z&spr=https&sv=2022-11-02&sr=b&sig=OpsVZ2C1xZj8j9f%2BBHQyXLm1b1DAHsGtWR%2BdXyEA92s%3D")
+    blob_client = BlobClient.from_blob_url("https://kisnewstorage.blob.core.windows.net/apirecord/Engine_Detail_Update.csv?sp=racwdyi&st=2024-01-11T14:22:42Z&se=2030-01-11T22:22:42Z&spr=https&sv=2022-11-02&sr=b&sig=BTgyOyyAFHv2ycFDlyTMEBSnxI8bZQJ4%2FSfEfDDCPEE%3D")
     download_stream = blob_client.download_blob(max_concurrency=1, encoding='UTF-8')
     engine_id = pd.read_csv(StringIO(download_stream.readall()), low_memory=False)
     # engine_id = pd.read_csv(r"D:\Data for Bridge\KIS\API_Record\Engine_Detail_Update.csv")
@@ -148,7 +148,7 @@ def run():
         
     mydb.commit()
     cursor.close()
-    blob_client = BlobClient.from_blob_url("https://kisnewstorage.blob.core.windows.net/apirecord/join_subdrop.csv?sp=r&st=2023-05-18T05:09:09Z&se=2023-12-31T13:09:09Z&spr=https&sv=2022-11-02&sr=b&sig=hqTfwV%2BBgcZdUNuzurCAJDNELdgPQ70mMUnc%2Bd0g9E0%3D")
+    blob_client = BlobClient.from_blob_url("https://kisnewstorage.blob.core.windows.net/apirecord/join_subdrop.csv?sp=racwdyi&st=2024-01-11T14:23:16Z&se=2030-01-11T22:23:16Z&spr=https&sv=2022-11-02&sr=b&sig=MsHY0BbZLN0Qs0k5%2BfKPtvcry5ITV%2FHDeJr%2BW7ntcuc%3D")
     download_stream = blob_client.download_blob(max_concurrency=1, encoding='UTF-8')
     join_subdrop = pd.read_csv(StringIO(download_stream.readall()), low_memory=False)
     import_template.uploadCSV('KIS Data',join_subdrop,'Engine_Detail')
